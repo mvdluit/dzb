@@ -27,7 +27,7 @@
   </div>
   } @if (updatedLinesInfo().length > 0) {
   <div class="updates-log">
-    <h3>Aangepaste regels:</h3>
+    <h3>Aangepaste regels ({{ updatedLinesInfo().length }}):</h3>
     @for (info of updatedLinesInfo(); track info.originalLine) {
     <div class="update-info">
       <app-diff-viewer
