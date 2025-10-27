@@ -1,0 +1,41 @@
+<div class="container">
+  <h2>DPIA100 bestand volgnummer updater</h2>
+  <p>
+    Selecteer een DPIA100 .txt bestand om de volgnummers, waar nodig, aan te passen naar de in
+    Youforce bekende volgnummers.
+  </p>
+
+  <div class="upload-section">
+    <input type="file" (change)="onFileSelected($event)" accept=".txt" [disabled]="loading()" />
+    <button (click)="processFile()" [disabled]="!selectedFile() || loading()">
+      @if (loading()) {
+      <span>Verwerken...</span>
+      } @else {
+      <span>Verwerk bestand</span>
+      }
+    </button>
+  </div>
+
+  @if (error()) {
+  <div class="error-message">
+    <p>{{ error() }}</p>
+  </div>
+  } @if (processedContent()) {
+  <div class="download-section">
+    <p>Het bestand is verwerkt. Je kunt nu het aangepaste bestand downloaden.</p>
+    <a (click)="downloadFile()" class="download-link">Download aangepast bestand</a>
+  </div>
+  } @if (updatedLinesInfo().length > 0) {
+  <div class="updates-log">
+    <h3>Aangepaste regels:</h3>
+    @for (info of updatedLinesInfo(); track info.originalLine) {
+    <div class="update-info">
+      <app-diff-viewer
+        [originalText]="info.originalLine"
+        [updatedText]="info.updatedLine"
+      ></app-diff-viewer>
+    </div>
+    }
+  </div>
+  }
+</div>

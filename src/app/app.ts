@@ -1,11 +1,11 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { FileUpdater } from './file-updater/file-updater';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [FileUpdater],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
 export class App {
   protected readonly title = signal('sequence-number-converter');
