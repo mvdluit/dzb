@@ -1,3 +1,5 @@
+<span>aangepast: </span>
 @for (part of diffParts(); track $index) {
 <span [class.addition]="part.isAddition">{{ part.content }}</span>
 }
+<p class="original">origineel: {{ originalText() }}</p>

@@ -5,3 +5,10 @@
   border-radius: 3px;
   padding: 2px 0;
 }
+
+.original {
+  margin-top: 10px;
+  font-size: 0.75rem;
+  font-style: italic;
+  color: #6c757d;
+}
