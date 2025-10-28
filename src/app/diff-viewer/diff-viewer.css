@@ -12,3 +12,11 @@
   font-style: italic;
   color: #6c757d;
 }
+
+.changed {
+  background-color: #d3b6b6;
+  color: #bb3d3d;
+  font-weight: bold;
+  border-radius: 2px;
+  padding: 2px 0;
+}

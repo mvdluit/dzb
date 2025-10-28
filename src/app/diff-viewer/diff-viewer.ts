@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
 
 interface DiffPart {
   content: string;
   isAddition: boolean;
+  oldContent: string;
+  isChanged: boolean;
 }
 
 @Component({
@@ -32,7 +34,12 @@ export class DiffViewer {
         ) {
           currentIndex++;
         }
-        parts.push({ content: updated.substring(start, currentIndex), isAddition: false });
+        parts.push({
+          content: updated.substring(start, currentIndex),
+          isAddition: false,
+          oldContent: original.substring(start, currentIndex),
+          isChanged: false,
+        });
       } else {
         // Added or different part
         const start = currentIndex;
@@ -42,10 +49,14 @@ export class DiffViewer {
         ) {
           currentIndex++;
         }
-        parts.push({ content: updated.substring(start, currentIndex), isAddition: true });
+        parts.push({
+          content: updated.substring(start, currentIndex),
+          isAddition: true,
+          oldContent: original.substring(start, currentIndex),
+          isChanged: true,
+        });
       }
     }
-
     return parts;
   });
 }

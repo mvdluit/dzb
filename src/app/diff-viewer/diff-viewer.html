@@ -2,4 +2,8 @@
 @for (part of diffParts(); track $index) {
 <span [class.addition]="part.isAddition">{{ part.content }}</span>
 }
-<p class="original">origineel: {{ originalText() }}</p>
+<p class="original">
+  origineel: @for (part of diffParts(); track $index) {
+  <span [class.changed]="part.isChanged">{{ part.oldContent }}</span>
+  }
+</p>
