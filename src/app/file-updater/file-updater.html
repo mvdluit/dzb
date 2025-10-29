@@ -24,7 +24,20 @@
   <div class="download-section">
     <p>Het bestand is verwerkt. Je kunt nu het aangepaste bestand downloaden.</p>
     <a (click)="downloadFile()" class="download-link">Download aangepast bestand</a>
+    <div class="file-size-info">
+      <p>
+        Oorspronkelijke bestandsgrootte: {{ originalFileSize() }} bytes | Aangepaste
+        bestandsgrootte: {{ newFileSize() }} bytes
+      </p>
+      @if (originalFileSize() !== newFileSize()) {
+      <p class="file-size-error">
+        <b>Let op:</b> bestandsgrootte komt niet overeen. Check het aangepaste bestand goed op
+        ongewenste aanpassingen.
+      </p>
+      }
+    </div>
   </div>
+
   } @if (updatedLinesInfo().length > 0) {
   <div class="updates-log">
     <h3>Aangepaste regels ({{ updatedLinesInfo().length }}):</h3>

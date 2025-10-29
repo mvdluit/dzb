@@ -140,6 +140,17 @@ button:hover:not(:disabled) {
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
+.file-size-info {
+  margin-top: 1rem;
+  color: var(--dark-gray);
+  font-size: 0.75rem;
+}
+
+.file-size-error {
+  color: var(--error-color) !important;
+  font-size: 0.75rem;
+}
+
 .updates-log {
   margin-top: 2rem;
   width: 100%;

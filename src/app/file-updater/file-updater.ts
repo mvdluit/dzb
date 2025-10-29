@@ -22,6 +22,9 @@ export class FileUpdater {
   updatedLinesInfo = signal<UpdateInfo[]>([]);
   loading = signal(false);
   error = signal<string | null>(null);
+  newFileSize = signal<number | null>(null);
+  originalFileSize = signal<number | null>(null);
+  blob: Blob | null = null;
 
   private dataService = inject(DataService);
 
@@ -45,6 +48,7 @@ export class FileUpdater {
     this.error.set(null);
     this.processedContent.set(null);
     this.updatedLinesInfo.set([]);
+    this.originalFileSize.set(file.size);
 
     this.dataService
       .getLookupData()
@@ -57,6 +61,8 @@ export class FileUpdater {
         tap(({ processedText, updatedInfos }) => {
           this.processedContent.set(processedText);
           this.updatedLinesInfo.set(updatedInfos);
+          this.blob = new Blob([processedText || ''], { type: 'text/plain' });
+          this.newFileSize.set(this.blob.size);
         }),
         catchError((err) => {
           console.error(err);
@@ -69,13 +75,11 @@ export class FileUpdater {
   }
 
   downloadFile(): void {
-    const content = this.processedContent();
     const file = this.selectedFile();
-    if (!content || !file) {
+    if (!this.blob || !file) {
       return;
     }
-    const blob = new Blob([content], { type: 'text/plain' });
-    const url = window.URL.createObjectURL(blob);
+    const url = window.URL.createObjectURL(this.blob);
     const a = document.createElement('a');
     a.href = url;
     a.download = file.name;
