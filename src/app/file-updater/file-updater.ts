@@ -105,7 +105,7 @@ export class FileUpdater {
     const lines = text.split('\n');
     const updatedInfos: UpdateInfo[] = [];
     const updatedLines = lines.map((line) => {
-      if (line.length < 22) return line;
+      if (line.length < 22 || line.substring(16, 19).trim() === '') return line;
 
       const idMatch = line.substring(10, 15);
 
