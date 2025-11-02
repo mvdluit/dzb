@@ -1,0 +1,1 @@
+:root{--primary-color: #4a90e2;--secondary-color: #fcb900;--background-color: #0090e3;--text-color: #efefef;--light-gray: #e9ecef;--dark-gray: #6c757d;--error-color: #d9534f;--success-color: #5cb85c;--font-family: "Roboto", Helvetica, Arial, sans-serif;--border-radius: 8px;--shadow: 0 4px 6px rgba(0, 0, 0, .1)}body{margin:0;background-color:var(--background-color)}
