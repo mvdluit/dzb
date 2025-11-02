@@ -1,0 +1,44 @@
+.diff-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: monospace;
+  white-space: pre;
+  background-color: #f1f1f1;
+  color: --var(dark-gray) !important;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.diff-line {
+  display: flex;
+}
+
+.diff-line.added {
+  background-color: #6dd68b;
+}
+
+.diff-line.removed {
+  background-color: #e96473;
+}
+
+.line-number {
+  width: 40px;
+  text-align: right;
+  padding-right: 10px;
+  color: #555;
+  background-color: #ddd;
+  user-select: none;
+}
+
+.diff-line-marker {
+  width: 20px;
+  text-align: center;
+  color: #666;
+  flex-shrink: 0;
+}
+
+.diff-line-content {
+  flex-grow: 1;
+}
