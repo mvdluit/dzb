@@ -1,0 +1,15 @@
+<div class="diff-container">
+  @for (line of diffInterleaved(); track line.text) {
+  <div
+    class="diff-line"
+    [class.added]="line.type === 'added'"
+    [class.removed]="line.type === 'removed'"
+  >
+    <span class="line-number">{{ line.lineNumber }}</span>
+    <span class="diff-line-marker">{{
+      line.type === 'added' ? '+' : line.type === 'removed' ? '-' : '&nbsp;'
+    }}</span>
+    <span class="diff-line-content">{{ line.text }}</span>
+  </div>
+  }
+</div>

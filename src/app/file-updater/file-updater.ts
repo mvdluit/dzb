@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { catchError, finalize, map, Observable, of, switchMap, tap } from 'rxjs';
 import { DataService, LookupEntry } from '../data.service';
 import { DiffViewer } from '../diff-viewer/diff-viewer';
+import { FileDiffViewer } from '../file-diff-viewer/file-diff-viewer';
 
 interface UpdateInfo {
   originalLine: string;
@@ -11,13 +12,14 @@ interface UpdateInfo {
 
 @Component({
   selector: 'app-file-updater',
-  imports: [CommonModule, DiffViewer],
+  imports: [CommonModule, DiffViewer, FileDiffViewer],
   templateUrl: './file-updater.html',
   styleUrls: ['./file-updater.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileUpdater {
   selectedFile = signal<File | null>(null);
+  originalContent = signal<string | null>(null);
   processedContent = signal<string | null>(null);
   updatedLinesInfo = signal<UpdateInfo[]>([]);
   loading = signal(false);
@@ -55,6 +57,7 @@ export class FileUpdater {
       .pipe(
         switchMap((lookupData) =>
           this.readFileAsObservable(file).pipe(
+            tap((text) => this.originalContent.set(text)),
             map((text) => this.updateSequenceNumbers(text, lookupData))
           )
         ),
