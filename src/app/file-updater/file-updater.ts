@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { CommonModule } from '@angular/common';
 import { catchError, finalize, map, Observable, of, switchMap, tap } from 'rxjs';
 import { DataService, LookupEntry } from '../data.service';
-import { DiffViewer } from '../diff-viewer/diff-viewer';
 import { FileDiffViewer } from '../file-diff-viewer/file-diff-viewer';
 
 interface UpdateInfo {
@@ -12,7 +11,7 @@ interface UpdateInfo {
 
 @Component({
   selector: 'app-file-updater',
-  imports: [CommonModule, DiffViewer, FileDiffViewer],
+  imports: [CommonModule, FileDiffViewer],
   templateUrl: './file-updater.html',
   styleUrls: ['./file-updater.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
