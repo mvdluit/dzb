@@ -41,15 +41,6 @@
   } @if (updatedLinesInfo().length > 0) {
   <div class="updates-log">
     <h3>Aangepaste regels ({{ updatedLinesInfo().length }}):</h3>
-
-    @for (info of updatedLinesInfo(); track info.originalLine) {
-    <div class="update-info">
-      <app-diff-viewer
-        [originalText]="info.originalLine"
-        [updatedText]="info.updatedLine"
-      ></app-diff-viewer>
-    </div>
-    }
   </div>
   } @if(processedContent() !== null && originalContent() !== null) {
   <app-file-diff-viewer
