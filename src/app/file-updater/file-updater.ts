@@ -9,6 +9,11 @@ interface UpdateInfo {
   updatedLine: string;
 }
 
+interface SequenceConflict {
+  id: string;
+  sequences: string[];
+}
+
 @Component({
   selector: 'app-file-updater',
   imports: [CommonModule, FileDiffViewer],
@@ -25,6 +30,7 @@ export class FileUpdater {
   error = signal<string | null>(null);
   newFileSize = signal<number | null>(null);
   originalFileSize = signal<number | null>(null);
+  sequenceConflicts = signal<SequenceConflict[]>([]);
   blob: Blob | null = null;
 
   private dataService = inject(DataService);
@@ -109,6 +115,14 @@ export class FileUpdater {
     lookupData: LookupEntry[]
   ): { processedText: string; updatedInfos: UpdateInfo[] } {
     const lines = text.split('\n');
+
+    const conflicts = this.findSequenceConflicts(lines);
+    this.sequenceConflicts.set(conflicts);
+
+    if (conflicts.length > 0) {
+      return { processedText: text, updatedInfos: [] };
+    }
+
     const updatedInfos: UpdateInfo[] = [];
     const updatedLines = lines.map((line) => {
       if (line.length < 22 || line.substring(16, 19).trim() === '') return line;
@@ -129,5 +143,36 @@ export class FileUpdater {
     });
 
     return { processedText: updatedLines.join('\n'), updatedInfos };
+  }
+
+  private findSequenceConflicts(lines: string[]): SequenceConflict[] {
+    const sequencesByID = new Map<string, Set<string>>();
+
+    for (const line of lines) {
+      if (line.length < 19) continue;
+
+      const id = line.substring(10, 15);
+      const sequence = line.substring(16, 19).trim();
+
+      if (sequence === '') continue;
+
+      if (!sequencesByID.has(id)) {
+        sequencesByID.set(id, new Set([sequence]));
+      } else {
+        sequencesByID.get(id)!.add(sequence);
+      }
+    }
+
+    const conflicts: SequenceConflict[] = [];
+    for (const [id, sequences] of sequencesByID) {
+      if (sequences.size > 1) {
+        conflicts.push({
+          id,
+          sequences: Array.from(sequences),
+        });
+      }
+    }
+
+    return conflicts;
   }
 }
