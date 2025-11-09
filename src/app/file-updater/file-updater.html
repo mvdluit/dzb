@@ -5,70 +5,32 @@
     Youforce bekende volgnummers.
   </p>
 
-  <div class="upload-section">
-    <input type="file" (change)="onFileSelected($event)" accept=".txt" [disabled]="loading()" />
-    <button (click)="processFile()" [disabled]="!selectedFile() || loading()">
-      @if (loading()) {
-      <span>Verwerken...</span>
-      } @else {
-      <span>Verwerk bestand</span>
-      }
-    </button>
-  </div>
+  <app-file-upload-section
+    [loading]="loading()"
+    [error]="error()"
+    [selectedFile]="selectedFile()"
+    (fileSelected)="onFileSelected($event)"
+    (processFile)="processFile()"
+    (downloadFile)="downloadFile()"
+  ></app-file-upload-section>
 
   @if (error()) {
   <div class="error-message">
     <p>{{ error() }}</p>
   </div>
-  } @if (sequenceConflicts().length > 0) {
-  <div class="error-message">
-    <h3>Conflicterende volgnummers gevonden:</h3>
-    <div class="sequence-conflicts">
-      @for (conflict of sequenceConflicts(); track conflict.id) {
-      <div class="conflict-item">
-        <p class="conflict-text">
-          <strong>ID {{ conflict.id }}</strong> heeft meerdere volgnummers: @for (sequence of
-          conflict.sequences; track sequence) {
-          <span class="sequence-badge">{{ sequence }}</span>
-          }
-        </p>
-      </div>
-      }
-    </div>
-    <p class="conflict-help">
-      Om te voorkomen dat meerdere volgnummers automatisch worden vervangen door het volgnummer dat
-      bekend is in Youforce, moeten de conflicten in het oorspronkelijke bestand worden opgelost.
-    </p>
-    <p class="conflict-help">
-      Indien het hoogste volgnummer een nieuw dienstverband betreft, moet worden bepaald of er ook
-      een nieuw dienstverband moet worden aangemaakt in Youforce. In dit geval moeten de regels met
-      het hoogste volgnummer uit het oorspronkelijke bestand worden gekopieerd naar een nieuw
-      bestand, welke vervolgens apart kan worden verwerkt nadat het nieuwe dienstverband in Youforce
-      is aangemaakt.
-    </p>
-  </div>
-  } @if (processedContent() && sequenceConflicts().length === 0) {
-  <div class="download-section">
-    <p>Het bestand is verwerkt. Je kunt nu het aangepaste bestand downloaden.</p>
-    <a (click)="downloadFile()" class="download-link">Download aangepast bestand</a>
-    <div class="file-size-info">
-      <p>
-        Oorspronkelijke bestandsgrootte: {{ originalFileSize() }} bytes | Aangepaste
-        bestandsgrootte: {{ newFileSize() }} bytes
-      </p>
-      @if (originalFileSize() !== newFileSize()) {
-      <p class="file-size-error">
-        <b>Let op:</b> bestandsgrootte komt niet overeen. Check het aangepaste bestand goed op
-        ongewenste aanpassingen.
-      </p>
-      }
-    </div>
-  </div>
+  }
 
+  <app-sequence-conflict-list [conflicts]="sequenceConflicts()"></app-sequence-conflict-list>
+
+  @if (processedContent() && sequenceConflicts().length === 0) {
+  <app-download-section
+    [processedContent]="processedContent()"
+    [originalFileSize]="originalFileSize()"
+    [newFileSize]="newFileSize()"
+    (downloadFile)="downloadFile()"
+  ></app-download-section>
   } @if (updatedLinesInfo().length > 0) {
-  <div class="updates-log">
-    <h3>Aangepaste regels ({{ updatedLinesInfo().length }}):</h3>
-  </div>
+  <h3>Aangepaste regels ({{ updatedLinesInfo().length }}):</h3>
   } @if(processedContent() !== null && originalContent() !== null && sequenceConflicts().length ===
   0) {
   <app-file-diff-viewer

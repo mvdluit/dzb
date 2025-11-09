@@ -1,0 +1,28 @@
+@if (conflicts().length > 0) {
+<div class="error-message">
+  <h3>Conflicterende volgnummers gevonden:</h3>
+  <div class="sequence-conflicts">
+    @for (conflict of conflicts(); track conflict.id) {
+    <div class="conflict-item">
+      <p>
+        <strong>ID {{ conflict.id }}</strong> heeft meerdere volgnummers: @for (sequence of
+        conflict.sequences; track sequence) {
+        <span class="sequence-badge">{{ sequence }}</span>
+        }
+      </p>
+    </div>
+    }
+  </div>
+  <p class="conflict-help">
+    Om te voorkomen dat meerdere volgnummers automatisch worden vervangen door het volgnummer dat
+    bekend is in Youforce, moeten de conflicten in het oorspronkelijke bestand worden opgelost.
+  </p>
+  <p class="conflict-help">
+    Indien het hoogste volgnummer een nieuw dienstverband betreft, moet worden bepaald of er ook een
+    nieuw dienstverband moet worden aangemaakt in Youforce. In dit geval moeten de regels met het
+    hoogste volgnummer uit het oorspronkelijke bestand worden gekopieerd naar een nieuw bestand,
+    welke vervolgens apart kan worden verwerkt nadat het nieuwe dienstverband in Youforce is
+    aangemaakt.
+  </p>
+</div>
+}

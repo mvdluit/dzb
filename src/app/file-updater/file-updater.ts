@@ -1,8 +1,12 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { catchError, finalize, map, Observable, of, switchMap, tap } from 'rxjs';
 import { DataService, LookupEntry } from '../data.service';
+import { FileProcessingService } from '../file-processing.service';
 import { FileDiffViewer } from '../file-diff-viewer/file-diff-viewer';
+import { FileUploadSection } from '../file-upload-section/file-upload-section';
+import { SequenceConflictList } from '../sequence-conflict-list/sequence-conflict-list';
+import { DownloadSection } from '../download-section/download-section';
 
 interface UpdateInfo {
   originalLine: string;
@@ -16,7 +20,7 @@ interface SequenceConflict {
 
 @Component({
   selector: 'app-file-updater',
-  imports: [CommonModule, FileDiffViewer],
+  imports: [CommonModule, FileDiffViewer, FileUploadSection, SequenceConflictList, DownloadSection],
   templateUrl: './file-updater.html',
   styleUrls: ['./file-updater.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,15 +38,13 @@ export class FileUpdater {
   blob: Blob | null = null;
 
   private dataService = inject(DataService);
+  private fileProcessingService = inject(FileProcessingService) as FileProcessingService;
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      this.selectedFile.set(input.files[0]);
-      this.processedContent.set(null);
-      this.updatedLinesInfo.set([]);
-      this.error.set(null);
-    }
+  onFileSelected(file: File): void {
+    this.selectedFile.set(file);
+    this.processedContent.set(null);
+    this.updatedLinesInfo.set([]);
+    this.error.set(null);
   }
 
   processFile(): void {
@@ -61,9 +63,17 @@ export class FileUpdater {
       .getLookupData()
       .pipe(
         switchMap((lookupData) =>
-          this.readFileAsObservable(file).pipe(
+          this.fileProcessingService.readFileAsObservable(file).pipe(
             tap((text) => this.originalContent.set(text)),
-            map((text) => this.updateSequenceNumbers(text, lookupData))
+            map((text) => {
+              const lines = text.split('\n');
+              const conflicts = this.fileProcessingService.findSequenceConflicts(lines);
+              this.sequenceConflicts.set(conflicts);
+              if (conflicts.length > 0) {
+                return { processedText: text, updatedInfos: [] };
+              }
+              return this.fileProcessingService.updateSequenceNumbers(text, lookupData);
+            })
           )
         ),
         tap(({ processedText, updatedInfos }) => {
@@ -93,86 +103,5 @@ export class FileUpdater {
     a.download = file.name;
     a.click();
     window.URL.revokeObjectURL(url);
-  }
-
-  private readFileAsObservable(file: File): Observable<string> {
-    return new Observable((subscriber) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const text = e.target?.result as string;
-        subscriber.next(text);
-        subscriber.complete();
-      };
-      reader.onerror = (e) => {
-        subscriber.error('Error reading file');
-      };
-      reader.readAsText(file);
-    });
-  }
-
-  private updateSequenceNumbers(
-    text: string,
-    lookupData: LookupEntry[]
-  ): { processedText: string; updatedInfos: UpdateInfo[] } {
-    const lines = text.split('\n');
-
-    const conflicts = this.findSequenceConflicts(lines);
-    this.sequenceConflicts.set(conflicts);
-
-    if (conflicts.length > 0) {
-      return { processedText: text, updatedInfos: [] };
-    }
-
-    const updatedInfos: UpdateInfo[] = [];
-    const updatedLines = lines.map((line) => {
-      if (line.length < 22 || line.substring(16, 19).trim() === '') return line;
-
-      const idMatch = line.substring(10, 15);
-
-      const lookupEntry = lookupData.find((entry) => entry.id === idMatch);
-
-      if (lookupEntry) {
-        const newSequence = lookupEntry.sequence.padEnd(3, ' ').substring(0, 3);
-        const updatedLine = line.substring(0, 16) + newSequence + line.substring(19);
-        if (line !== updatedLine) {
-          updatedInfos.push({ originalLine: line, updatedLine });
-        }
-        return updatedLine;
-      }
-      return line;
-    });
-
-    return { processedText: updatedLines.join('\n'), updatedInfos };
-  }
-
-  private findSequenceConflicts(lines: string[]): SequenceConflict[] {
-    const sequencesByID = new Map<string, Set<string>>();
-
-    for (const line of lines) {
-      if (line.length < 19) continue;
-
-      const id = line.substring(10, 15);
-      const sequence = line.substring(16, 19).trim();
-
-      if (sequence === '') continue;
-
-      if (!sequencesByID.has(id)) {
-        sequencesByID.set(id, new Set([sequence]));
-      } else {
-        sequencesByID.get(id)!.add(sequence);
-      }
-    }
-
-    const conflicts: SequenceConflict[] = [];
-    for (const [id, sequences] of sequencesByID) {
-      if (sequences.size > 1) {
-        conflicts.push({
-          id,
-          sequences: Array.from(sequences),
-        });
-      }
-    }
-
-    return conflicts;
   }
 }

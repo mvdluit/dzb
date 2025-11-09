@@ -1,0 +1,10 @@
+<div class="upload-section">
+  <input type="file" (change)="onFileInputChange($event)" accept=".txt" [disabled]="loading()" />
+  <button (click)="processFile.emit()" [disabled]="!selectedFile() || loading()">
+    @if (loading()) {
+    <span>Verwerken...</span>
+    } @else {
+    <span>Verwerk bestand</span>
+    }
+  </button>
+</div>
