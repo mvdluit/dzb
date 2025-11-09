@@ -15,6 +15,11 @@ h2 {
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
+h3 {
+  color: var(--text-color);
+  margin: 4rem 0 2rem 0;
+}
+
 p {
   color: var(--text-color);
   text-align: center;
@@ -22,187 +27,13 @@ p {
   line-height: 1.6;
 }
 
-.upload-section {
-  margin: 2rem 0;
+app-file-upload-section {
+  display: block;
+  width: 100%;
+}
+
+app-sequence-conflict-list {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  padding: 2rem;
-  background: white;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
+  justify-content: center;
   width: 100%;
-  max-width: 500px;
-}
-
-input[type='file'] {
-  border: 2px dashed var(--primary-color);
-  padding: 1rem;
-  border-radius: var(--border-radius);
-  width: 100%;
-  text-align: center;
-  color: var(--dark-gray);
-  background-color: #fdfdff;
-  cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s;
-}
-
-input[type='file']:hover {
-  background-color: #f1f5fe;
-  border-color: #3a75c4;
-}
-
-input[type='file']::file-selector-button {
-  margin-right: 20px;
-  border: none;
-  background: var(--primary-color);
-  padding: 10px 20px;
-  border-radius: 10px;
-  color: var(--text-color);
-  cursor: pointer;
-  transition: background 0.2s ease-in-out;
-}
-
-input[type='file']::file-selector-button:hover {
-  background-color: #3a75c4;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-}
-
-button {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 1rem 2rem;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 600;
-  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-button:disabled {
-  background-color: var(--light-gray);
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-button:hover:not(:disabled) {
-  background-color: #3a75c4;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-}
-
-.error-message {
-  color: var(--error-color);
-  background-color: #fdd;
-  padding: 1rem;
-  border-radius: var(--border-radius);
-  margin-top: 1rem;
-  width: 100%;
-  max-width: 500px;
-  text-align: center;
-  border: 1px solid var(--error-color);
-}
-
-.download-section {
-  margin-top: 2rem;
-  text-align: center;
-  padding: 2rem;
-  background: white;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
-  width: 100%;
-  max-width: 500px;
-  & p {
-    color: var(--dark-gray);
-  }
-}
-
-.download-link {
-  display: inline-block;
-  background-color: var(--success-color);
-  color: white;
-  padding: 1rem 2rem;
-  text-decoration: none;
-  font-weight: bold;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-}
-
-.download-link:hover {
-  background-color: #4cae4c;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-}
-
-.file-size-info {
-  margin-top: 1rem;
-  color: var(--dark-gray);
-  font-size: 0.75rem;
-}
-
-.file-size-error {
-  color: var(--error-color) !important;
-  font-size: 0.75rem;
-}
-
-.updates-log {
-  margin-top: 2rem;
-  width: 100%;
-  max-width: 800px;
-}
-
-.updates-log h3 {
-  color: var(--text-color);
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.update-info {
-  background-color: #fff;
-  color: var(--dark-gray);
-  padding: 1rem;
-  border-radius: var(--border-radius);
-  margin-bottom: 0.5rem;
-  box-shadow: var(--shadow);
-  border-left: 5px solid var(--secondary-color);
-}
-
-.sequence-conflicts {
-  margin: 1rem 0;
-  text-align: left;
-}
-
-.conflict-item {
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 0.75rem;
-  border-radius: var(--border-radius);
-  margin-bottom: 0.5rem;
-  border: 1px solid #ffcccc;
-}
-
-.conflict-text {
-  color: var(--error-color);
-}
-
-.sequence-badge {
-  display: inline-block;
-  background-color: #fff;
-  border: 1px solid var(--error-color);
-  color: var(--error-color);
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  margin: 0 0.25rem;
-  font-family: monospace;
-}
-
-.conflict-help {
-  margin-top: 1rem;
-  font-style: italic;
-  color: var(--error-color);
 }
