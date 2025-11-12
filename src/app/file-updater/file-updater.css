@@ -7,7 +7,7 @@
   min-height: 100vh;
 }
 
-h2 {
+h1 {
   color: var(--text-color);
   font-size: 2rem;
   font-weight: 600;
@@ -27,7 +27,26 @@ p {
   line-height: 1.6;
 }
 
-app-file-upload-section {
+ol {
+  text-align: left;
+  max-width: 600px;
+  color: var(--text-color);
+  border: 2px dashed var(--text-color);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  li {
+    margin-bottom: 1rem;
+  }
+}
+
+strong {
+  text-decoration: underline;
+}
+
+app-file-upload-section,
+app-excel-upload-section {
   display: block;
   width: 100%;
 }

@@ -1,10 +1,34 @@
 <div class="container">
-  <h2>DPIA100 bestand volgnummer updater</h2>
+  <h1>Dienstverband updater</h1>
   <p>
-    Selecteer een DPIA100 .txt bestand om de volgnummers, waar nodig, aan te passen naar de in
-    Youforce bekende volgnummers.
+    Vergelijkt dienstverbandnummers uit de Compas export (DPIA100 tekst bestanden) met actieve
+    dienstverbanden zoals bekend in Youforce. Indien voor een personeelsnummer een afwijkend
+    dienstverband wordt gevonden, zal deze worden aangepast naar het Youforce dienstverband.
   </p>
+  <ol>
+    <h3>Sluit dit tabblad <strong>niet</strong> voordat alle DPIA100 bestanden verwerkt zijn!</h3>
+    <li>
+      Upload een actueel excel bestand met actieve dienstverbanden uit Youforce (bestaande
+      rapportage). Pas dit bestand niet handmatig aan, upload het zoals het uit Youforce komt!
+      <strong>Deze stap hoeft slechts 1x per sessie gedaan te worden</strong>.
+    </li>
+    <li>Upload een DPIA100 .TXT bestand. <strong>Herhaal deze stap voor CAD/CA2/WSW</strong>.</li>
+    <li>
+      Controleer de verwerkte data en download het aangepaste bestand.
+      <strong>Herhaal deze stap voor CAD/CA2/WSW</strong>.
+    </li>
+    <li>
+      Sla de aangepaste bestanden op in een map "aangepast", overschrijf de originele DPIA100
+      bestanden niet!
+    </li>
+    <li>
+      Volg de Youforce import werkbeschrijving en gebruik de bestanden uit de "aangepast" map.
+    </li>
+  </ol>
 
+  <app-excel-upload-section (lookupData)="setLookupData($event)"></app-excel-upload-section>
+
+  @if(lookupData() !== null && lookupData()!.length !== 0) {
   <app-file-upload-section
     [loading]="loading()"
     [error]="error()"
@@ -13,8 +37,7 @@
     (processFile)="processFile()"
     (downloadFile)="downloadFile()"
   ></app-file-upload-section>
-
-  @if (error()) {
+  } @if (error()) {
   <div class="error-message">
     <p>{{ error() }}</p>
   </div>

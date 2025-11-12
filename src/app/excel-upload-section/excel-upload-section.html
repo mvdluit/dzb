@@ -1,0 +1,23 @@
+<div class="upload-section">
+  <h3>Upload excel: actieve dienstverbanden uit Youforce</h3>
+  <input type="file" (change)="onFileSelected($event)" accept=".xlsx" />
+  <button (click)="uploadFile()" [disabled]="!selectedFile() || isLoading()">
+    @if(isLoading()){ Verwerken... } @else { Verwerk bestand }
+  </button>
+
+  @if(error()) {
+  <p class="error-message">{{ error() }}</p>
+  } @if(processedExcelData().length > 0 && !isLoading()) {
+  <p>
+    Excel bestand is succesvol verwerkt: {{ processedExcelData().length }} dienstverbanden gevonden.
+  </p>
+  <button (click)="openModal()">Bekijk verwerkte data</button>
+  }
+</div>
+
+@if(showModal()) {
+<app-processed-data-modal
+  [data]="processedExcelData()"
+  (close)="closeModal()"
+></app-processed-data-modal>
+}

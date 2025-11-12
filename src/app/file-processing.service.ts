@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LookupEntry } from './data.service';
+import { LookupObject } from './excel-processing.service';
 import { Observable } from 'rxjs';
 
 export interface UpdateInfo {
@@ -52,7 +52,7 @@ export class FileProcessingService {
 
   updateSequenceNumbers(
     text: string,
-    lookupData: LookupEntry[]
+    lookupData: LookupObject[]
   ): { processedText: string; updatedInfos: UpdateInfo[] } {
     const lines = text.split('\n');
     const updatedInfos: UpdateInfo[] = [];

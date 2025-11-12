@@ -1,12 +1,13 @@
-import { ChangeDetectionStrategy, Component, inject, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { catchError, finalize, map, Observable, of, switchMap, tap } from 'rxjs';
-import { DataService, LookupEntry } from '../data.service';
+import { catchError, finalize, map, of, tap } from 'rxjs';
 import { FileProcessingService } from '../file-processing.service';
 import { FileDiffViewer } from '../file-diff-viewer/file-diff-viewer';
 import { FileUploadSection } from '../file-upload-section/file-upload-section';
 import { SequenceConflictList } from '../sequence-conflict-list/sequence-conflict-list';
 import { DownloadSection } from '../download-section/download-section';
+import { ExcelUploadSection } from '../excel-upload-section/excel-upload-section';
+import { LookupObject } from '../excel-processing.service';
 
 interface UpdateInfo {
   originalLine: string;
@@ -20,7 +21,14 @@ interface SequenceConflict {
 
 @Component({
   selector: 'app-file-updater',
-  imports: [CommonModule, FileDiffViewer, FileUploadSection, SequenceConflictList, DownloadSection],
+  imports: [
+    CommonModule,
+    FileDiffViewer,
+    FileUploadSection,
+    SequenceConflictList,
+    DownloadSection,
+    ExcelUploadSection,
+  ],
   templateUrl: './file-updater.html',
   styleUrls: ['./file-updater.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,6 +37,7 @@ export class FileUpdater {
   selectedFile = signal<File | null>(null);
   originalContent = signal<string | null>(null);
   processedContent = signal<string | null>(null);
+  lookupData = signal<LookupObject[] | null>(null);
   updatedLinesInfo = signal<UpdateInfo[]>([]);
   loading = signal(false);
   error = signal<string | null>(null);
@@ -37,7 +46,6 @@ export class FileUpdater {
   sequenceConflicts = signal<SequenceConflict[]>([]);
   blob: Blob | null = null;
 
-  private dataService = inject(DataService);
   private fileProcessingService = inject(FileProcessingService) as FileProcessingService;
 
   onFileSelected(file: File): void {
@@ -47,6 +55,9 @@ export class FileUpdater {
     this.error.set(null);
   }
 
+  setLookupData(data: LookupObject[]): void {
+    this.lookupData.set(data);
+  }
   processFile(): void {
     const file = this.selectedFile();
     if (!file) {
@@ -59,23 +70,24 @@ export class FileUpdater {
     this.updatedLinesInfo.set([]);
     this.originalFileSize.set(file.size);
 
-    this.dataService
-      .getLookupData()
+    if (!this.lookupData() || this.lookupData()!.length === 0) {
+      this.error.set('No lookup data available from Excel file.');
+      this.loading.set(false);
+      return;
+    }
+    this.fileProcessingService
+      .readFileAsObservable(file)
       .pipe(
-        switchMap((lookupData) =>
-          this.fileProcessingService.readFileAsObservable(file).pipe(
-            tap((text) => this.originalContent.set(text)),
-            map((text) => {
-              const lines = text.split('\n');
-              const conflicts = this.fileProcessingService.findSequenceConflicts(lines);
-              this.sequenceConflicts.set(conflicts);
-              if (conflicts.length > 0) {
-                return { processedText: text, updatedInfos: [] };
-              }
-              return this.fileProcessingService.updateSequenceNumbers(text, lookupData);
-            })
-          )
-        ),
+        tap((text) => this.originalContent.set(text)),
+        map((text) => {
+          const lines = text.split('\n');
+          const conflicts = this.fileProcessingService.findSequenceConflicts(lines);
+          this.sequenceConflicts.set(conflicts);
+          if (conflicts.length > 0) {
+            return { processedText: text, updatedInfos: [] };
+          }
+          return this.fileProcessingService.updateSequenceNumbers(text, this.lookupData()!);
+        }),
         tap(({ processedText, updatedInfos }) => {
           this.processedContent.set(processedText);
           this.updatedLinesInfo.set(updatedInfos);
