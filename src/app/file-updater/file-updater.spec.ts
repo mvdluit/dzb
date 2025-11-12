@@ -1,9 +1,7 @@
 import { TestBed, ComponentFixture, tick, fakeAsync } from '@angular/core/testing';
 import { FileUpdater } from './file-updater';
 import { FileProcessingService } from '../file-processing.service';
-import { DataService } from '../data.service';
-import { signal } from '@angular/core';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 
 describe('FileUpdater', () => {
   let fixture: ComponentFixture<FileUpdater>;
@@ -12,18 +10,11 @@ describe('FileUpdater', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [FileUpdater],
-      providers: [
-        FileProcessingService,
-        {
-          provide: DataService,
-          useValue: {
-            getLookupData: () => of([{ id: '03559', sequence: '999' }]),
-          },
-        },
-      ],
+      providers: [FileProcessingService],
     });
     fixture = TestBed.createComponent(FileUpdater);
     component = fixture.componentInstance;
+    component.lookupData.set([{ id: '03559', sequence: '999' }]);
     fixture.detectChanges();
   });
 
@@ -40,16 +31,6 @@ describe('FileUpdater', () => {
     component.selectedFile.set(null);
     component.processFile();
     expect(component.loading()).toBe(false);
-  });
-
-  it('should set error if file processing fails', () => {
-    spyOn(component['dataService'], 'getLookupData').and.returnValue(
-      throwError(() => new Error('Failed to process file. Please check the console for details'))
-    );
-    const testFile = new File(['test'], 'test.txt');
-    component.selectedFile.set(testFile);
-    component.processFile();
-    expect(component.error()).toContain('Failed to process file');
   });
 
   it('should update processedContent and updatedLinesInfo on success', fakeAsync(() => {

@@ -17,6 +17,12 @@ h3 {
   color: var(--primary-color);
 }
 
+p {
+  margin: 0;
+  color: var(--dark-gray);
+  text-align: center;
+}
+
 input[type='file'] {
   border: 2px dashed var(--primary-color);
   padding: 1rem;

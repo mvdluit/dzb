@@ -1,5 +1,5 @@
-import { FileProcessingService, SequenceConflict, UpdateInfo } from './file-processing.service';
-import { LookupEntry } from './data.service';
+import { FileProcessingService } from './file-processing.service';
+import { LookupObject } from './excel-processing.service';
 import { TestBed } from '@angular/core/testing';
 
 describe('FileProcessingService', () => {
@@ -30,7 +30,7 @@ describe('FileProcessingService', () => {
 
   it('should update sequence numbers based on lookup data', () => {
     const text = 'CPSP00372003559 001\nCPSP00372003559 002';
-    const lookupData: LookupEntry[] = [{ id: '03559', sequence: '999' }];
+    const lookupData: LookupObject[] = [{ id: '03559', sequence: '999' }];
     const result = service.updateSequenceNumbers(text, lookupData);
     expect(result.processedText).toContain('03559 999');
     expect(result.updatedInfos.length).toBe(2);
@@ -38,7 +38,7 @@ describe('FileProcessingService', () => {
 
   it('should not update lines if no matching lookup entry', () => {
     const text = 'CPSP00372003559 001';
-    const lookupData: LookupEntry[] = [{ id: 'XXXXX', sequence: '999' }];
+    const lookupData: LookupObject[] = [{ id: 'XXXXX', sequence: '999' }];
     const result = service.updateSequenceNumbers(text, lookupData);
     expect(result.processedText).toContain('03559 001');
     expect(result.updatedInfos.length).toBe(0);
@@ -46,7 +46,7 @@ describe('FileProcessingService', () => {
 
   it('should handle sample data without errors', () => {
     const sample = `CPSP00372003559 001\nCPSP00199003559 001\nCPSP02508003559 001\nCPSP00372005543 002`;
-    const lookupData: LookupEntry[] = [
+    const lookupData: LookupObject[] = [
       { id: '03559', sequence: '123' },
       { id: '05543', sequence: '456' },
     ];
