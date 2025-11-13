@@ -8,5 +8,5 @@ import { FileUpdater } from './file-updater/file-updater';
   styleUrl: './app.css',
 })
 export class App {
-  protected readonly title = signal('sequence-number-converter');
+  protected readonly title = signal('Compas - Youforce dienstverband conversie');
 }
