@@ -14,6 +14,7 @@ export interface SequenceConflict {
 
 @Injectable({ providedIn: 'root' })
 export class FileProcessingService {
+  
   readFileAsObservable(file: File): Observable<string> {
     return new Observable((subscriber) => {
       const reader = new FileReader();
@@ -28,6 +29,7 @@ export class FileProcessingService {
       reader.readAsText(file);
     });
   }
+  
   findSequenceConflicts(lines: string[]): SequenceConflict[] {
     const sequencesByID = new Map<string, Set<string>>();
     for (const line of lines) {
