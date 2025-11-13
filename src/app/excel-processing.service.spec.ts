@@ -119,17 +119,17 @@ describe('ExcelProcessingService', () => {
     const mockFile = new File([], 'valid.xlsx', {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     });
-    console.log(mockFile);
+    
     service
       .processExcelFile(mockFile)
       .pipe(take(1))
       .subscribe({
         next: (data) => {
-          expect(data.length).toBe(3); // Expect 3 valid IDs
+          expect(data.length).toBe(3);
           expect(data[0]).toEqual({ id: '00123', sequence: '001' });
           expect(data[1]).toEqual({ id: '00045', sequence: '002' });
           expect(data[2]).toEqual({ id: '67890', sequence: '003' });
-          expect(fileReaderSpy).toHaveBeenCalled(); // Ensure FileReader was used
+          expect(fileReaderSpy).toHaveBeenCalled();
           done();
         },
         error: (err) => {
@@ -257,8 +257,8 @@ describe('ExcelProcessingService', () => {
     });
 
     it('should return null for malformed IDs', () => {
-      expect((service as any).parseAndFormatId('1')).toBeNull(); // Missing sequence part
-      expect((service as any).parseAndFormatId('1 2 3')).toBeNull(); // Too many parts
+      expect((service as any).parseAndFormatId('1')).toBeNull();
+      expect((service as any).parseAndFormatId('1 2 3')).toBeNull();
       expect((service as any).parseAndFormatId('')).toBeNull();
       expect((service as any).parseAndFormatId('   ')).toBeNull();
       expect((service as any).parseAndFormatId('abc')).toBeNull();
@@ -273,7 +273,6 @@ describe('ExcelProcessingService', () => {
     fileReaderSpy.and.returnValue(readerInstance);
     const abortSpy = spyOn(readerInstance, 'abort');
 
-    // Create a subscription but immediately unsubscribe
     const subscription = service.processExcelFile(mockFile).subscribe();
     subscription.unsubscribe();
 
