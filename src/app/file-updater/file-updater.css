@@ -17,7 +17,7 @@ h1 {
 
 h3 {
   color: var(--text-color);
-  margin: 4rem 0 2rem 0;
+  margin: 1rem 0 2rem 0;
 }
 
 p {
@@ -46,13 +46,71 @@ strong {
 }
 
 app-file-upload-section,
-app-excel-upload-section {
+app-excel-upload-section,
+app-download-section {
   display: block;
   width: 100%;
+  position: relative;
+  max-width: 800px;
 }
 
 app-sequence-conflict-list {
   display: flex;
   justify-content: center;
   width: 100%;
+  max-width: 800px;
+}
+
+app-excel-upload-section::before {
+  content: '1';
+  font-size: 3rem;
+  font-weight: 700;
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-color);
+  border-radius: 50%;
+  border: 3px solid var(--text-color);
+}
+
+app-file-upload-section::before {
+  content: '2';
+  font-size: 3rem;
+  font-weight: 700;
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-color);
+  border-radius: 50%;
+  border: 3px solid var(--text-color);
+}
+
+app-download-section::before {
+  content: '3';
+  font-size: 3rem;
+  font-weight: 700;
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-color);
+  border-radius: 50%;
+  border: 3px solid var(--text-color);
 }
