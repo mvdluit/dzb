@@ -14,7 +14,7 @@ export class DownloadSection {
   newFileSize = input<number | null>(null);
   downloadFile = output<void>();
   tooltipOptions: TooltipOptions = {
-    title: 'Actieve Youforce dienstverbanden',
+    title: 'Controleer en download',
     content:
       '1. Controleer de aangepaste regels. \n2. Check of de bestandsgrootte van het originele en aangepaste bestand gelijk zijn. \n3. Download het aangepaste bestand en sla het op in een map "aangepast". \n4. Ga terug naar de vorige stap om een export bestand voor een andere regeling te verwerken.',
     position: 'right',
