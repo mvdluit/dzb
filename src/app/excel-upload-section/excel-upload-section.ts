@@ -2,12 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component, output, signal, effect } from '@angular/core';
 import { ExcelProcessingService, LookupObject } from '../excel-processing.service';
 import { ProcessedDataModalComponent } from '../processed-data-modal/processed-data-modal';
+import { HelpIcon } from '../help-icon/help-icon';
+import { TooltipOptions } from '../tooltip/tooltip.directive';
 
 @Component({
   selector: 'app-excel-upload-section',
   templateUrl: './excel-upload-section.html',
   styleUrls: ['./excel-upload-section.css'],
-  imports: [CommonModule, ProcessedDataModalComponent],
+  imports: [CommonModule, ProcessedDataModalComponent, HelpIcon],
 })
 export class ExcelUploadSection {
   selectedFile = signal<File | null>(null);
@@ -17,6 +19,12 @@ export class ExcelUploadSection {
 
   showModal = signal<boolean>(false);
   lookupData = output<LookupObject[]>();
+  tooltipOptions: TooltipOptions = {
+    title: 'Actieve Youforce dienstverbanden',
+    content:
+      '1. Selecteer een actueel gedownloade actieve dienstverband rapportage uit Youforce. \n2. Klik op verwerk bestand. \n3. Controleer het verwerkte bestand. (optioneel) \n4. Ga naar de volgende stap om een Compas export bestand te selecteren.',
+    position: 'right',
+  };
 
   constructor(private excelProcessingService: ExcelProcessingService) {
     effect(() => {

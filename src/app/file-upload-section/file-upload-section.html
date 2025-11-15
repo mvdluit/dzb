@@ -1,4 +1,5 @@
 <div class="upload-section">
+  <app-help-icon [tooltip]="tooltipOptions"></app-help-icon>
   <h3>Upload DPIA100 bestand: herhaal voor CAD/CA2/WSW</h3>
   <input type="file" (change)="onFileInputChange($event)" accept=".txt" [disabled]="loading()" />
   <button (click)="processFile.emit()" [disabled]="!selectedFile() || loading()">

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { catchError, finalize, map, of, tap } from 'rxjs';
 import { FileProcessingService } from '../file-processing.service';

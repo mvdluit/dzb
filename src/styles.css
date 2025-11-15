@@ -17,3 +17,10 @@ body {
   margin: 0;
   background-color: var(--background-color);
 }
+
+app-help-icon {
+  position: absolute;
+  top: 40px;
+  right: 125px;
+  cursor: help;
+}
