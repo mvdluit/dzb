@@ -1,9 +1,10 @@
 import { Component, signal } from '@angular/core';
-import { FileUpdater } from './file-updater/file-updater';
+import { Header } from './header/header';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [FileUpdater],
+  imports: [Header, RouterModule],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

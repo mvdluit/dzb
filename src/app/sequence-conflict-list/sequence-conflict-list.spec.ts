@@ -20,6 +20,7 @@ describe('SequenceConflictList', () => {
       { id: '05543', sequences: ['004', '005'] },
     ];
     fixture.componentRef.setInput('conflicts', conflicts);
+    fixture.detectChanges();
     expect(component.conflicts()).toEqual(conflicts);
   });
 });

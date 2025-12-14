@@ -1,0 +1,47 @@
+<section class="container">
+  <h1>Bestanden vergelijken voor 13e maand</h1>
+  <p>
+    Upload eerst het controle bestand (export december) en daarna het nieuwe bestand (13e maand
+    export). Unieke regels in het nieuwe bestand ten opzichte van het controle bestand worden
+    getoond en kunnen worden gedownload. Hierna dienen de bestanden met unieke regels nog ge-update
+    te worden om er zeker van te zijn dat de dienstverbanden matchen.
+  </p>
+
+  <div class="uploader-row">
+    <div class="upload-section">
+      <h3>Controle bestand (export december)</h3>
+      <input type="file" accept="text/*" (change)="onControlFileSelected($event)" />
+      <div class="meta">{{ controlFileName() || 'Geen bestand geselecteerd' }}</div>
+    </div>
+
+    <div class="upload-section">
+      <h3>Nieuw bestand (export 13e maand)</h3>
+      <input type="file" accept="text/*" (change)="onNewFileSelected($event)" />
+      <div class="meta">{{ newFileName() || 'Geen bestand geselecteerd' }}</div>
+    </div>
+  </div>
+
+  @if (computed()) {
+  <div class="results">
+    <h3>
+      Unieke regels in nieuw bestand: <span class="count">{{ uniqueLines().length }}</span>
+    </h3>
+
+    @if (uniqueLines().length > 0) {
+    <div class="actions">
+      <button
+        class="download-link"
+        (click)="downloadUniqueLines()"
+        aria-label="Download unieke regels"
+      >
+        Download bestand met unieke regels
+      </button>
+    </div>
+
+    <pre class="unique-list">{{ uniqueLines().join('\n') }}</pre>
+    } @else {
+    <p>Geen unieke regels gevonden.</p>
+    }
+  </div>
+  }
+</section>

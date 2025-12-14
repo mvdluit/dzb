@@ -15,12 +15,14 @@ describe('DownloadSection', () => {
 
   it('should accept processedContent input and reflect value', () => {
     fixture.componentRef.setInput('processedContent', 'test content');
+    fixture.detectChanges();
     expect(component.processedContent()).toBe('test content');
   });
 
   it('should accept file size inputs and reflect values', () => {
     fixture.componentRef.setInput('originalFileSize', 123);
     fixture.componentRef.setInput('newFileSize', 456);
+    fixture.detectChanges();
     expect(component.originalFileSize()).toBe(123);
     expect(component.newFileSize()).toBe(456);
   });
