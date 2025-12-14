@@ -1,0 +1,138 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-family);
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+h1 {
+  color: var(--text-color);
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+p {
+  color: var(--text-color);
+  text-align: center;
+  max-width: 700px;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+.uploader-row {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+}
+
+.upload-section {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  background: white;
+  color: var(--dark-gray);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+.upload-section h3 {
+  margin: 0;
+  color: var(--primary-color);
+}
+
+input[type='file'] {
+  border: 2px dashed var(--primary-color);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  width: 100%;
+  text-align: center;
+  color: var(--dark-gray);
+  background-color: #fdfdff;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+input[type='file']:hover {
+  background-color: #f1f5fe;
+  border-color: #3a75c4;
+}
+
+input[type='file']::file-selector-button {
+  margin-right: 20px;
+  border: none;
+  background: var(--primary-color);
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+input[type='file']::file-selector-button:hover {
+  background-color: #3a75c4;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.results {
+  margin-top: 1.25rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.results h3 {
+  text-align: center;
+  color: var(--text-color);
+  margin: 0 0 0.75rem 0;
+}
+
+.actions {
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.download-link {
+  display: inline-block;
+  background-color: var(--success-color);
+  color: white;
+  padding: 0.9rem 1.6rem;
+  text-decoration: none;
+  font-weight: 700;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+  border: none;
+}
+
+.download-link:hover {
+  background-color: #4cae4c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.unique-list {
+  background: #f7f7f7;
+  padding: 1rem;
+  border-radius: 4px;
+  max-height: 300px;
+  overflow: auto;
+}
+
+.count {
+  font-weight: 700;
+}
