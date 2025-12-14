@@ -4,7 +4,6 @@ import { LookupObject } from '../excel-processing.service';
 
 @Component({
   selector: 'app-processed-data-modal',
-  standalone: true,
   imports: [CommonModule],
   template: `
     <div class="modal-overlay" (click)="onOverlayClick($event)">
